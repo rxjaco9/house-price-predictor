@@ -1,0 +1,94 @@
+content link - https://github.com/mlopsbootcamp/house-price-predictor
+
+PS D:\Rohith\STARTUP-VENTURES\Projects\Fall-Detector> cd D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main
+PS D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main> python --version
+Python 3.12.4
+
+INSTALL uv in powershell after that follow below commands
+
+PS D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main> uv --version 
+uv 0.8.19 (fc7c2f8b5 2025-09-19)
+PS D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main> uv venv --python python3.11
+Using CPython 3.11.13
+Creating virtual environment at: .venv
+Activate with: .venv\Scripts\activate
+
+PS D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main> ls
+
+
+    Directory: D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        21-09-2025     12:44                .venv
+d-----        21-09-2025     11:02                data
+d-----        21-09-2025     11:02                deployment
+d-----        21-09-2025     11:02                models
+d-----        21-09-2025     11:02                notebooks
+d-----        21-09-2025     11:02                src
+d-----        21-09-2025     11:02                streamlit_app
+-a----        19-09-2025     18:43            527 .gitignore
+-a----        19-09-2025     18:43           1068 LICENSE
+-a----        21-09-2025     12:43            531 readme-own.txt
+-a----        19-09-2025     18:43           5357 README.md
+-a----        19-09-2025     18:43           1918 requirements.txt
+
+
+PS D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main> 
+------------------------------------------ACTIVATE VIRTUAL ENVIRONMENT---------------------------------------------------------
+PS D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main> .venv\Scripts\activate     
+(house-price-predictor-main) PS D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main> python --version
+Python 3.11.13
+(house-price-predictor-main) PS D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main> 
+(house-price-predictor-main) PS D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main> uv pip install -r requirements.txt
+
+run any code inside the project folder
+select the python env which is inside the venv created for this project
+
+-----------------------------------install jupyterlab using below commands---------------------------------------
+uv pip install jupyterlab
+
+to launch jupyter notebook(optional but not recommended as ot can be run in vscode)
+python -m jupyterlab
+
+------------------------------order in which notebooks have to be run----------------------------------
+first run 
+D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main\notebooks\00_data_engineering.ipynb
+then 
+notebooks/01_exploratory_data_analysis.ipynb
+then
+notebooks/03_experimentation.ipynb
+
+---------------------------------start mlflow---------------------------------------
+after that start mlfow for experimentation
+first start docker desktop
+go to location of docker-compose.yaml i.e D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main\deployment\mlflow\docker-compose.yaml
+run below command
+docker-compose -f docker-compose.yaml up -d
+mlflow will be up on http://localhost:5555/#/experiments
+port no 5555 is mentioned inside docker-compose.yaml
+below command is also used to confirm if mlflwo started up
+docker-compose -f docker-compose.yaml ps or docker-compose ps
+
+------------------------------------------------------------------------
+run the below comamnd in the root folder
+python src/features/engineer.py --input data/processed/cleaned_house_data.csv --output data/processed/featured_house_data.csv --preprocessor models/trained/preprocessor.pkl
+the preprocessor will be used for inference later
+
+the src/features/engineer.py script has done the same function as 02_feature_engineering.ipynb, only difference is the new values are encoded.
+
+------------------------------------------------------------------------
+after this is run successfully then run the experiments by executing 03_experimentation.ipynb
+after the notebook is run, open mlflow url i.e http://localhost:5555/#/experiments, click on "House Price Prediction Experiment, then press + on the latest run "model_comparison", 
+select the algorithms to be compare & click on "Compare" to see collective results of all the algorithms to find the best possible algo.
+
+------------------------------------------------------------------------
+the configuration of the best performing algorithm will be saved in following path i.e configs/model_config.yaml
+this is one way of reproducing the model. 
+another way is to create a pkl of the model, which will have to wrapped using a api
+
+-------------------------mlflow model registration---------------------------
+ use below command to register the model in mlflow i.e http://localhost:5555/#/models
+ 
+ python src/models/train_model.py   --config configs/model_config.yaml   --data data/processed/featured_house_data.csv   --models-dir models   --mlflow-tracking-uri http://localhost:5555

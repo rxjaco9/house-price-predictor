@@ -1,0 +1,97 @@
+This script is basically an end-to-end machine learning workflow for predicting house prices, with some added automation and experiment tracking. Let’s unwrap it step by step in plain terms:
+
+📝 What the program is doing
+Loads the processed dataset
+Reads featured_house_data.csv.
+Splits into X (features) and y (target = house price).
+Further splits into train/test sets.
+
+Finds the most useful features
+
+Uses RFE (Recursive Feature Elimination) with XGBoost to select the top 10 features that best predict price.
+
+Drops the weaker ones.
+
+This ensures the models train on the most relevant data.
+
+Sets up experiment tracking (MLflow)
+
+If MLflow tracking is enabled, every model run will be logged:
+
+Hyperparameters
+
+Metrics (MAE, MSE, RMSE, R²)
+
+Saved model artifact
+
+Trains multiple models
+
+Models considered:
+
+Linear Regression
+
+Random Forest
+
+Gradient Boosting
+
+XGBoost
+
+Each model is run with a hyperparameter grid search (GridSearchCV) to find the best settings.
+
+Evaluates each using:
+
+MAE (average absolute error)
+
+MSE (average squared error)
+
+RMSE (root mean squared error, more interpretable)
+
+R² (explains variance)
+
+Logs and compares results
+
+Saves results in MLflow (if running).
+
+Prints metrics for each model.
+
+Plots bar charts comparing models on R², RMSE, MAE.
+
+Finds the best model
+
+Selects the one with the highest R² score.
+
+Prints its performance and parameters.
+
+Saves a YAML config file with:
+
+Best model name
+
+Its hyperparameters
+
+Evaluation metrics
+
+Selected features
+
+⚡ Why is it doing this?
+
+Feature selection (RFE) → To avoid noisy/irrelevant variables and speed up training.
+
+Multiple models + grid search → Because we don’t know which algorithm is best beforehand. Testing several with tuned hyperparameters gives a fair comparison.
+
+MLflow logging → For reproducibility and experiment tracking. You can check back later which model/params worked best.
+
+Metric evaluation → To compare models on different error perspectives.
+
+YAML config → Acts like a record of the “champion” model and its setup, useful for deployment or re-training.
+
+✅ In simple terms
+
+The program is:
+
+Cleaning up the dataset to keep only important features.
+
+Training and comparing several machine learning models to predict house prices.
+
+Tracking everything with MLflow.
+
+Picking the best model and saving its details for later use.
