@@ -1,4 +1,4 @@
-model:
+ model:
   best_model: XGBoost
   feature_sets:
     rfe:

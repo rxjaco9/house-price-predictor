@@ -1,4 +1,5 @@
 content link - https://github.com/mlopsbootcamp/house-price-predictor
+own content link - https://github.com/rxjaco9/house-price-predictor
 
 PS D:\Rohith\STARTUP-VENTURES\Projects\Fall-Detector> cd D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main
 PS D:\Rohith\STARTUP-VENTURES\Projects\house-price-predictor-main> python --version
