@@ -50,11 +50,11 @@ jobs:
         name: preprocessor
         path: models/trained/preprocessor.pkl
 
-model-training:
-  needs: data-processing
-  runs-on: ubuntu-latest
+  model-training:
+    needs: data-processing
+    runs-on: ubuntu-latest
 
-  steps:
+    steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
